@@ -1,0 +1,77 @@
+services:
+  prod-insta-front:
+    image: mohamedsamir170/insta-front:latest
+    container_name: prod-insta-front
+    ports:
+      - "3002:80"
+    env_file:
+      - .env.prod
+    networks:
+      - prod-insta-pay
+    depends_on:
+      - prod-user-service
+      - prod-transaction-service
+      - prod-reporting-service
+    volumes:
+      - ./prod-nginx.conf:/etc/nginx/conf.d/default.conf
+
+  prod-user-service:
+    depends_on:
+      - prod-mongo
+    image: mohamedsamir170/user-service:latest
+    container_name: prod-user-service
+    env_file:
+      - .env.prod
+    networks:
+      - prod-insta-pay
+    ports:
+      - "5002:5000"
+    volumes:
+      - prod-user-data:/app/data
+
+  prod-transaction-service:
+    depends_on:
+      - prod-user-service
+    image: mohamedsamir170/transaction-service:latest
+    container_name: prod-transaction-service
+    env_file:
+      - .env.prod
+    ports:
+      - "5005:5000"
+    networks:
+      - prod-insta-pay
+    volumes:
+      - prod-transaction-data:/app/data
+
+  prod-reporting-service:
+    depends_on:
+      - prod-transaction-service
+    image: mohamedsamir170/reporting-service:latest
+    container_name: prod-reporting-service
+    env_file:
+      - .env.prod
+    ports:
+      - "5008:5000"
+    networks:
+      - prod-insta-pay
+    volumes:
+      - prod-reporting-data:/app/data
+  
+  prod-mongo:
+    image: mongo
+    container_name: prod-mongo
+    networks:
+      - prod-insta-pay
+    volumes:
+      - prod-mongo-data:/data/db
+
+networks:
+  prod-insta-pay:
+    name: prod-insta-pay
+    driver: bridge
+
+volumes:
+  prod-user-data:
+  prod-transaction-data:
+  prod-reporting-data: 
+  prod-mongo-data:

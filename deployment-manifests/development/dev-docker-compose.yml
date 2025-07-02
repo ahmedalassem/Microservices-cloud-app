@@ -1,0 +1,77 @@
+services:
+  dev-insta-front:
+    image: mohamedsamir170/insta-front:dev
+    container_name: dev-insta-front
+    ports:
+      - "3000:80"
+    env_file:
+      - .env.dev
+    networks:
+      - dev-insta-pay
+    depends_on:
+      - dev-user-service
+      - dev-transaction-service
+      - dev-reporting-service
+    volumes:
+      - ./dev-nginx.conf:/etc/nginx/conf.d/default.conf
+
+  dev-user-service:
+    depends_on:
+      - dev-mongo
+    image: mohamedsamir170/user-service:dev
+    container_name: dev-user-service
+    env_file:
+      - .env.dev
+    networks:
+      - dev-insta-pay
+    ports:
+      - "5000:5000"
+    volumes:
+      - dev-user-data:/app/data
+
+  dev-transaction-service:
+    depends_on:
+      - dev-user-service
+    image: mohamedsamir170/transaction-service:dev
+    container_name: dev-transaction-service
+    env_file:
+      - .env.dev
+    ports:
+      - "5003:5000"
+    networks:
+      - dev-insta-pay
+    volumes:
+      - dev-transaction-data:/app/data
+
+  dev-reporting-service:
+    depends_on:
+      - dev-transaction-service
+    image: mohamedsamir170/reporting-service:dev
+    container_name: dev-reporting-service
+    env_file:
+      - .env.dev
+    ports:
+      - "5006:5000"
+    networks:
+      - dev-insta-pay
+    volumes:
+      - dev-reporting-data:/app/data
+  
+  dev-mongo:
+    image: mongo
+    container_name: dev-mongo
+    networks:
+      - dev-insta-pay
+    volumes:
+      - dev-mongo-data:/data/db
+
+networks:
+  dev-insta-pay:
+    name: dev-insta-pay
+    driver: bridge
+
+volumes:
+  dev-user-data:
+  dev-transaction-data:
+  dev-reporting-data: 
+  dev-mongo-data:

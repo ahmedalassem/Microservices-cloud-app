@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-user-service
+  namespace: development
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-user-service
+  template:
+    metadata:
+      labels:
+        app: dev-user-service
+    spec:
+      containers:
+      - name: dev-user-service
+        image: mohamedsamir170/user-service:dev
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: insta-pay-config-dev
+            
+        ports:
+        - containerPort: 5000
+
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-user-service
+  namespace: development
+spec:
+  type: ClusterIP
+  selector:
+    app: dev-user-service
+  ports:
+    - port: 5000
+      targetPort: 5000

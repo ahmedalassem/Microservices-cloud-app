@@ -1,0 +1,26 @@
+# configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: insta-pay-config-dev
+  namespace: development
+data:
+  MONGODB_URI: "mongodb://dev-mongo:27017/"
+  MONGODB_DB: "insta_pay"
+  USER_SERVICE_URL: "http://dev-user-service:5000"
+  TRANSACTION_SERVICE_URL: "http://dev-transaction-service:5000"
+  REACT_APP_ENV: "development"
+  REACT_APP_USER_SERVICE_URL: "http://dev-user-service:5000"
+  REACT_APP_TRANSACTION_SERVICE_URL: "http://dev-transaction-service:5000"
+  REACT_APP_REPORTING_SERVICE_URL: "http://dev-reporting-service:5000"
+  REACT_APP_API_TIMEOUT: "10000"
+  REACT_APP_ENABLE_ANALYTICS: "false"
+  REACT_APP_ENABLE_LOGGING: "true"
+  REACT_APP_TITLE: "InstaPay"
+  REACT_APP_DESCRIPTION: "Instant Money Transfer Platform"
+  FLASK_APP: "app.py"
+  FLASK_ENV: "development"
+  FLASK_DEBUG: "1"
+  FLASK_HOST: "0.0.0.0"
+  FLASK_PORT: "5000"
+  SECRET_KEY: "192b9bdd22ab9ed4d12e236c78afcb9a393ec15f71bbf5dc987d54727823bcbf"

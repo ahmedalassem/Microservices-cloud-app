@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-mongo
+  namespace: testing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-mongo
+  template:
+    metadata:
+      labels:
+        app: test-mongo
+    spec:
+      containers:
+      - name: test-mongo
+        image: mongo:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-mongo
+  namespace: testing
+spec:
+  selector:
+    app: test-mongo
+  ports:
+    - protocol: TCP
+      port: 27017

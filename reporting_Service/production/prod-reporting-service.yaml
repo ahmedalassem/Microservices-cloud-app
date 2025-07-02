@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-reporting-service
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-reporting-service
+  template:
+    metadata:
+      labels:
+        app: prod-reporting-service
+    spec:
+      containers:
+      - name: prod-reporting-service
+        image: mohamedsamir170/reporting-service:latest
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: insta-pay-config-prod
+            
+        ports:
+        - containerPort: 5000
+
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-reporting-service
+  namespace: production
+spec:
+  type: ClusterIP
+  selector:
+    app: prod-reporting-service
+  ports:
+    - port: 5000
+      targetPort: 5000

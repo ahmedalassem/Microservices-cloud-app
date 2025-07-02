@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-mongo
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-mongo
+  template:
+    metadata:
+      labels:
+        app: prod-mongo
+    spec:
+      containers:
+      - name: prod-mongo
+        image: mongo:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-mongo
+  namespace: production
+spec:
+  selector:
+    app: prod-mongo
+  ports:
+    - protocol: TCP
+      port: 27017

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-reporting-service
+  namespace: testing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-reporting-service
+  template:
+    metadata:
+      labels:
+        app: test-reporting-service
+    spec:
+      containers:
+      - name: test-reporting-service
+        image: mohamedsamir170/reporting-service:test
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: insta-pay-config-test
+            
+        ports:
+        - containerPort: 5000
+
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-reporting-service
+  namespace: testing
+spec:
+  type: ClusterIP
+  selector:
+    app: test-reporting-service
+  ports:
+    - port: 5000
+      targetPort: 5000

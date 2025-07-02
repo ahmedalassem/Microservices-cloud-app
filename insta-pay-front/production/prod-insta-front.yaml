@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-insta-front
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prod-insta-front
+  template:
+    metadata:
+      labels:
+        app: prod-insta-front
+    spec:
+      containers:
+      - name: prod-insta-front
+        image: mohamedsamir170/insta-front:latest
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: insta-pay-config-prod
+            
+        ports:
+        - containerPort: 80
+
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-insta-front
+  namespace: production
+spec:
+  type: LoadBalancer
+  selector:
+    app: prod-insta-front
+  ports:
+    - port: 3000
+      targetPort: 80

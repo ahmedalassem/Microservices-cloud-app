@@ -1,0 +1,33 @@
+# Build stage
+FROM node:18-alpine as build
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+COPY production/.env.prod .env
+
+# Build the app
+RUN npm run build
+
+# Production stage with Nginx for serving files and API proxy
+FROM nginx:alpine
+
+# Copy built app from build stage
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy custom Nginx config with API proxy
+COPY production/prod-nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
