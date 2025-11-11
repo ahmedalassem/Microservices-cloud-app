@@ -1,0 +1,14 @@
+resources:
+- deployment.yaml
+- service.yaml
+
+namespace: default
+
+# configMapGenerator:
+# - envs:
+#   - config.properties
+#   name: user-config
+labels:
+- includeSelectors: true
+  pairs:
+    app: user-service

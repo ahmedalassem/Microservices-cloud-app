@@ -1,0 +1,20 @@
+bases:
+  - ../../base
+
+namespace: prod
+
+patchesStrategicMerge:
+  - replicas.yaml
+  - ports.yaml
+
+configMapGenerator:
+- files:
+  - config.properties
+  name: user-config
+labels:
+- includeSelectors: true
+  pairs:
+    app: prod-user-service
+images:
+- name: mohamedsamir170/user-service
+  newTag: latest

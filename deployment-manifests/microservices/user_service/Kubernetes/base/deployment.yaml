@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-service
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: user-service
+        image: mohamedsamir170/user-service:latest
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: user-config
+            
+        ports:
+        - containerPort: 5000
+
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
