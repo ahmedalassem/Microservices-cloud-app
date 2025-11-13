@@ -1,7 +1,0 @@
-flask
-flask_cors
-tensorflow
-pymongo
-passlib
-dotenv
-config

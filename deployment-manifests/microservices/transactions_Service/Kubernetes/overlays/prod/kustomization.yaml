@@ -1,0 +1,24 @@
+bases:
+  - ../../base
+
+namespace: prod
+
+namePrefix: prod-
+
+# patchesStrategicMerge:
+#   - replicas.yaml
+#   - ports.yaml
+
+configMapGenerator:
+- files:
+  - config.properties
+  name: transaction-config
+
+labels:
+- includeSelectors: true
+  pairs:
+    app: prod-transaction-service
+
+images:
+- name: mohamedsamir170/transaction-service
+  newTag: prod

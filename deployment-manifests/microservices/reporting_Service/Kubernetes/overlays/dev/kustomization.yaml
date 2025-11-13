@@ -5,18 +5,20 @@ namespace: dev
 
 namePrefix: dev-
 
-patchesStrategicMerge:
-  - replicas.yaml
-  - ports.yaml
+# patchesStrategicMerge:
+#   - replicas.yaml
+#   - ports.yaml
 
 configMapGenerator:
 - files:
   - config.properties
-  name: user-config
+  name: reporting-config
+
 labels:
 - includeSelectors: true
   pairs:
-    app: dev-user-service
+    app: dev-reporting-service
+
 images:
-- name: mohamedsamir170/user-service
+- name: mohamedsamir170/reporting-service
   newTag: dev
