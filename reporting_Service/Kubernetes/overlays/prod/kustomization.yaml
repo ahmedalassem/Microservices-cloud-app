@@ -1,0 +1,24 @@
+bases:
+  - ../../base
+
+namespace: prod
+
+namePrefix: prod-
+
+# patchesStrategicMerge:
+#   - replicas.yaml
+#   - ports.yaml
+
+configMapGenerator:
+- envs:
+  - config.properties
+  name: reporting-config
+
+labels:
+- includeSelectors: true
+  pairs:
+    app: prod-reporting-service
+
+images:
+- name: mohamedsamir170/reporting-service
+  newTag: latest

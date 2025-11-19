@@ -1,0 +1,24 @@
+bases:
+  - ../../base
+
+namespace: dev
+
+namePrefix: dev-
+
+# patchesStrategicMerge:
+#   - replicas.yaml
+#   - ports.yaml
+
+configMapGenerator:
+- envs:
+  - config.properties
+  name: insta-pay-config
+
+labels:
+- includeSelectors: true
+  pairs:
+    app: dev-insta-front
+
+images:
+- name: mohamedsamir170/insta-front
+  newTag: dev

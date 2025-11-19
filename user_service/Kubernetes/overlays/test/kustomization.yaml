@@ -1,0 +1,22 @@
+bases:
+  - ../../base
+
+namespace: test
+
+namePrefix: test-
+
+patchesStrategicMerge:
+  - replicas.yaml
+  - ports.yaml
+
+configMapGenerator:
+- envs:
+  - config.properties
+  name: user-config
+labels:
+- includeSelectors: true
+  pairs:
+    app: test-user-service
+images:
+- name: mohamedsamir170/user-service
+  newTag: test

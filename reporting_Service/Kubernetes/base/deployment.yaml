@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reporting-service
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - name: reporting-service
+        image: mohamedsamir170/reporting-service:latest
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: reporting-config
+            
+        ports:
+        - containerPort: 5000
+
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
+

@@ -1,0 +1,24 @@
+bases:
+  - ../../base
+
+namespace: test
+
+namePrefix: test-
+
+# patchesStrategicMerge:
+#   - replicas.yaml
+#   - ports.yaml
+
+configMapGenerator:
+- envs:
+  - config.properties
+  name: reporting-config
+
+labels:
+- includeSelectors: true
+  pairs:
+    app: test-reporting-service
+
+images:
+- name: mohamedsamir170/reporting-service
+  newTag: test

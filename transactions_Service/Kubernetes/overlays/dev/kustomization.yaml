@@ -1,0 +1,24 @@
+bases:
+  - ../../base
+
+namespace: dev
+
+namePrefix: dev-
+
+# patchesStrategicMerge:
+#   - replicas.yaml
+#   - ports.yaml
+
+configMapGenerator:
+- envs:
+  - config.properties
+  name: transaction-config
+
+labels:
+- includeSelectors: true
+  pairs:
+    app: dev-transaction-service
+
+images:
+- name: mohamedsamir170/transaction-service
+  newTag: dev
